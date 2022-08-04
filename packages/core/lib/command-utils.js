@@ -22,7 +22,9 @@ const getCommand = ({ inputStrings, options, noAliases }) => {
     return null;
   }
 
-  const firstInputString = inputStrings[0];
+  const firstInputString = ["-v", "--version"].includes(inputStrings[0])
+    ? "version"
+    : inputStrings[0];
   let chosenCommand = null;
 
   // If the command wasn't specified directly, go through a process
@@ -89,7 +91,7 @@ const getCommand = ({ inputStrings, options, noAliases }) => {
 // the input options, merges it with the input options, and returns the result
 const prepareOptions = ({ command, inputStrings, options }) => {
   const yargs = require("yargs/yargs")();
-  yargs.command(require(`./commands/${command.name}/meta`));
+  yargs.command(require(`./commands/${command.name}/meta`)).version(false);
   const commandOptions = yargs.parse(inputStrings);
 
   // remove the task name itself put there by yargs
