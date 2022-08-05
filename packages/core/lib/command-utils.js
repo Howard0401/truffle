@@ -22,11 +22,12 @@ const getCommand = ({ inputStrings, options, noAliases }) => {
     return null;
   }
 
-  const firstInputString = ["-v", "--version"].includes(inputStrings[0])
-    ? "version"
-    : inputStrings[0];
+  const firstInputString = inputStrings[0];
   let chosenCommand = null;
 
+  if (firstInputString === "-v" || firstInputString === "--version") {
+    chosenCommand = "version";
+  }
   // If the command wasn't specified directly, go through a process
   // for inferring the command.
   if (commands.includes(firstInputString)) {
@@ -139,7 +140,11 @@ const prepareOptions = ({ command, inputStrings, options }) => {
   let invalidOptions = inputOptions.filter(opt => !validOptions.includes(opt));
 
   // TODO: Remove exception for 'truffle run' when plugin options support added.
-  if (invalidOptions.length > 0 && command.name !== "run") {
+  if (
+    invalidOptions.length > 0 &&
+    command.name !== "run" &&
+    command.name !== "version"
+  ) {
     if (options.logger) {
       const log = options.logger.log || options.logger.debug;
       log(
