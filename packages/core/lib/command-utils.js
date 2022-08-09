@@ -25,12 +25,11 @@ const getCommand = ({ inputStrings, options, noAliases }) => {
   const firstInputString = inputStrings[0];
   let chosenCommand = null;
 
-  if (firstInputString === "-v" || firstInputString === "--version") {
-    chosenCommand = "version";
-  }
   // If the command wasn't specified directly, go through a process
   // for inferring the command.
-  if (commands.includes(firstInputString)) {
+  if (firstInputString === "-v" || firstInputString === "--version") {
+    chosenCommand = "version";
+  } else if (commands.includes(firstInputString)) {
     chosenCommand = firstInputString;
   } else if (noAliases !== true) {
     let currentLength = 1;
